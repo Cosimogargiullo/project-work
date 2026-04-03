@@ -1,0 +1,96 @@
+@import './variables';
+
+/* Shared table wrapper for horizontal overflow on narrow viewports */
+.data-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  --data-table-min-width: 760px;
+}
+
+.data-table {
+  width: 100%;
+  min-width: var(--data-table-min-width);
+}
+
+/* Shared mobile card layout for data rows */
+.responsive-data-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+.responsive-data-card {
+  position: relative;
+  border: 1px solid rgba($primary, 0.2);
+  border-radius: 14px;
+  padding: 14px 14px 12px;
+  background: linear-gradient(180deg, rgba($primary, 0.04) 0%, #fff 22%, #fff 100%);
+  box-shadow: 0 8px 20px rgba($primary, 0.08);
+  overflow: hidden;
+}
+
+.responsive-data-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, $primary 0%, rgba($primary, 0.45) 100%);
+}
+
+.responsive-data-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 6px 0;
+  border-bottom: 1px dashed rgba($primary, 0.14);
+}
+
+.responsive-data-row:last-of-type {
+  border-bottom: none;
+}
+
+.responsive-data-label {
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: rgba($primary, 0.92);
+  min-width: 96px;
+}
+
+.responsive-data-value {
+  text-align: right;
+  font-weight: 500;
+  color: #2d2d2d;
+}
+
+.responsive-data-break {
+  overflow-wrap: anywhere;
+}
+
+.responsive-data-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  padding-top: 10px;
+  margin-top: 10px;
+  border-top: 1px solid rgba($primary, 0.18);
+
+  button {
+    min-width: 40px;
+    border-radius: 10px;
+    background: rgba($primary, 0.08);
+  }
+}
+
+.responsive-data-empty {
+  text-align: center;
+  padding: 18px 12px;
+  border: 1px dashed rgba($primary, 0.35);
+  border-radius: 12px;
+  color: rgba($primary, 0.88);
+  font-weight: 600;
+}

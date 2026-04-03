@@ -1,0 +1,25 @@
+@import '../../../../styles/variables.scss';
+@import '../../../../styles/utilities.scss';
+
+mat-form-field {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 767px) {
+  .login-card {
+    padding: 1rem !important;
+  }
+}
+
+@media (max-width: 991px) {
+  .col-md-6 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+}
+
+.uppercase-input {
+  text-transform: uppercase;
+}

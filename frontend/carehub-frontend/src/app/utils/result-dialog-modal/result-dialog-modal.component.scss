@@ -1,0 +1,15 @@
+@import '../../../styles/variables.scss';
+@import '../../../styles/utilities.scss';
+
+.dialog-header {
+  background: $primary;
+  color: #fff;
+  padding: 1rem 1.5rem 0.5rem 1.5rem;
+  border-radius: 0.5rem 0.5rem 0 0;
+  position: relative;
+
+  .title-generic {
+    color: #fff;
+    font-weight: normal;
+  }
+}

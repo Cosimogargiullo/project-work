@@ -1,0 +1,11 @@
+{
+  "name": "carehub-workspace",
+  "private": true,
+  "scripts": {
+    "install:fe": "npm --prefix frontend/carehub-frontend install",
+    "start": "npm --prefix frontend/carehub-frontend run start --",
+    "start:fe": "npm --prefix frontend/carehub-frontend run start --",
+    "build": "npm --prefix frontend/carehub-frontend run build --",
+    "build:fe": "npm --prefix frontend/carehub-frontend run build --"
+  }
+}

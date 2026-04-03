@@ -1,0 +1,188 @@
+<div class="card-generic">
+  <h2 class="title-generic">Referti</h2>
+  <div class="bar-decorative"></div>
+
+  <div class="mb-3">
+    <div class="row g-2">
+      <div class="col-12 col-lg-3" *ngIf="!isPatient">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Paziente</mat-label>
+          <input
+            type="text"
+            matInput
+            placeholder="Cerca paziente per nome, cognome o username"
+            [matAutocomplete]="autoPatient"
+            [formControl]="patientSearchControl"
+            [disabled]="isLoadingPatients"
+          />
+          <mat-autocomplete #autoPatient="matAutocomplete" (optionSelected)="onPatientSelected($event.option.value)">
+            <mat-option *ngFor="let patient of patients" [value]="patient">
+              {{ displayPatient(patient) }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+
+      <div class="col-12 col-lg-3" *ngIf="!isDoctor">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Medico</mat-label>
+          <input
+            type="text"
+            matInput
+            placeholder="Cerca medico per nome, cognome o username"
+            [matAutocomplete]="autoDoctor"
+            [formControl]="doctorSearchControl"
+            [disabled]="isLoadingDoctors"
+          />
+          <mat-autocomplete #autoDoctor="matAutocomplete" (optionSelected)="onDoctorSelected($event.option.value)">
+            <mat-option *ngFor="let doctor of doctors" [value]="doctor">
+              {{ displayDoctor(doctor) }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+
+      <div class="col-12 col-lg-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Data appuntamento</mat-label>
+          <input matInput [matDatepicker]="appointmentDatePicker" [formControl]="dateControl" />
+          <mat-datepicker-toggle matSuffix [for]="appointmentDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #appointmentDatePicker></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      <div class="col-12 col-lg-2">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Data referto</mat-label>
+          <input matInput [matDatepicker]="reportDatePicker" [formControl]="reportDateControl" />
+          <mat-datepicker-toggle matSuffix [for]="reportDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #reportDatePicker></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      <div class="col-12 col-lg-auto d-flex align-items-end">
+        <button mat-icon-button color="primary" type="button" class="filters-reset-btn" (click)="resetFilters()" aria-label="Azzera filtri">
+          <mat-icon>filter_alt_off</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-end mb-3">
+    <button mat-raised-button color="primary" type="button" *ngIf="canManageReports" (click)="openCreateDialog()">
+      Nuovo referto
+    </button>
+  </div>
+
+    <div class="data-table-wrap" *ngIf="!isMobileView">
+    <table mat-table [dataSource]="reports" class="mat-elevation-z8 data-table">
+		<ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef>Data</th>
+      <td mat-cell *matCellDef="let report">{{ report.reportDate | date: 'dd/MM/yyyy' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="patientName">
+      <th mat-header-cell *matHeaderCellDef>Paziente</th>
+      <td mat-cell *matCellDef="let report">{{ patientNames[report.patientId] || report.patientId }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="doctorName">
+      <th mat-header-cell *matHeaderCellDef>Medico</th>
+      <td mat-cell *matCellDef="let report">{{ doctorNames[report.doctorId] || report.doctorId }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="appointmentId">
+      <th mat-header-cell *matHeaderCellDef>Appuntamento</th>
+      <td mat-cell *matCellDef="let report">
+        <ng-container *ngIf="appointmentDates[report.appointmentId]; else showMissing">
+          {{ appointmentDates[report.appointmentId] | date: 'dd/MM/yyyy HH:mm' }}
+        </ng-container>
+        <ng-template #showMissing>—</ng-template>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="cost">
+      <th mat-header-cell *matHeaderCellDef>Costo (&euro;)</th>
+      <td mat-cell *matCellDef="let report">{{ report.cost | number: '1.2-2' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+			<th mat-header-cell *matHeaderCellDef class="text-center actions-column"> Azioni </th>
+			<td mat-cell *matCellDef="let report" class="text-end actions-column">
+				<button mat-icon-button color="primary" type="button" (click)="view(report)" matTooltip="Visualizza referto" aria-label="Visualizza referto">
+          <mat-icon>visibility</mat-icon>
+        </button>
+        <button mat-icon-button color="primary" type="button" (click)="download(report)" matTooltip="Scarica referto" aria-label="Scarica referto">
+          <mat-icon>download</mat-icon>
+        </button>
+        <button mat-icon-button color="primary" type="button" *ngIf="canManageReports" (click)="editReport(report)" matTooltip="Modifica referto" aria-label="Modifica referto">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" type="button" *ngIf="canManageReports" (click)="deleteReport(report)" matTooltip="Elimina referto" aria-label="Elimina referto">
+          <mat-icon>delete</mat-icon>
+        </button>
+			</td>
+		</ng-container>
+
+		<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+		<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  </div>
+
+  <div class="responsive-data-list" *ngIf="isMobileView">
+    <div class="responsive-data-card" *ngFor="let report of reports">
+      <div class="responsive-data-row">
+        <span class="responsive-data-label">Data</span>
+        <span class="responsive-data-value">{{ report.reportDate | date: 'dd/MM/yyyy' }}</span>
+      </div>
+      <div class="responsive-data-row" *ngIf="!isPatient">
+        <span class="responsive-data-label">Paziente</span>
+        <span class="responsive-data-value">{{ patientNames[report.patientId] || report.patientId }}</span>
+      </div>
+      <div class="responsive-data-row" *ngIf="!isDoctor">
+        <span class="responsive-data-label">Medico</span>
+        <span class="responsive-data-value">{{ doctorNames[report.doctorId] || report.doctorId }}</span>
+      </div>
+      <div class="responsive-data-row">
+        <span class="responsive-data-label">Appunt.</span>
+        <span class="responsive-data-value">
+          <ng-container *ngIf="appointmentDates[report.appointmentId]; else reportApptMissing">
+            {{ appointmentDates[report.appointmentId] | date: 'dd/MM/yyyy HH:mm' }}
+          </ng-container>
+          <ng-template #reportApptMissing>-</ng-template>
+        </span>
+      </div>
+      <div class="responsive-data-row">
+        <span class="responsive-data-label">Costo</span>
+        <span class="responsive-data-value">{{ report.cost | number: '1.2-2' }} €</span>
+      </div>
+
+      <div class="responsive-data-actions">
+        <button mat-icon-button color="primary" type="button" (click)="view(report)" matTooltip="Visualizza referto" aria-label="Visualizza referto">
+          <mat-icon>visibility</mat-icon>
+        </button>
+        <button mat-icon-button color="primary" type="button" (click)="download(report)" matTooltip="Scarica referto" aria-label="Scarica referto">
+          <mat-icon>download</mat-icon>
+        </button>
+        <button mat-icon-button color="primary" type="button" *ngIf="canManageReports" (click)="editReport(report)" matTooltip="Modifica referto" aria-label="Modifica referto">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" type="button" *ngIf="canManageReports" (click)="deleteReport(report)" matTooltip="Elimina referto" aria-label="Elimina referto">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="responsive-data-empty" *ngIf="!reports || reports.length === 0">
+      Nessun referto trovato
+    </div>
+  </div>
+
+	<!-- <mat-paginator
+		[length]="totalAppointments"
+		[pageSize]="pageSize"
+		[pageSizeOptions]="[5, 10, 20]"
+		(page)="onPageChange($event)">
+	</mat-paginator> -->
+
+</div>

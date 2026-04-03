@@ -1,0 +1,12 @@
+<div class="dialog-header position-relative">
+  <div class="bar-decorative"></div>
+  <h1 mat-dialog-title class="title-generic text-white m-0">{{ data.titolo }}</h1>
+</div>
+
+<div mat-dialog-content class="card-generic {{ data.resultClass }}">
+  <p class="text-center" role="status" aria-live="polite">{{ data.messaggio }}</p>
+</div>
+
+<div mat-dialog-actions class="d-flex justify-content-end">
+  <button mat-raised-button class="btn btn-primary btn-sm" cdkFocusInitial (click)="chiudiDialog()">Chiudi</button>
+</div>

@@ -1,0 +1,34 @@
+@import '../../../../styles/variables.scss';
+
+.card-generic {
+  padding: 0 !important;
+}
+
+// // Stile header profilo (solo per il pannello profilo)
+// mat-expansion-panel.profile-panel mat-expansion-panel-header {
+//   background: $primary !important;
+//   color: #fff !important;
+// }
+//
+// mat-expansion-panel.profile-panel mat-expansion-panel-header .mat-icon {
+//   color: #fff !important;
+// }
+
+// mat-expansion-panel.profile-panel .mat-expansion-panel-header-title {
+//   color: #fff !important;
+// }
+
+/* Expansion panels: when expanded, header becomes primary bg with white text/icon; otherwise title/icon use $primary */
+:host ::ng-deep mat-expansion-panel.mat-expanded mat-expansion-panel-header {
+  background: $primary !important;
+  color: #fff !important;
+}
+:host ::ng-deep mat-expansion-panel.mat-expanded mat-expansion-panel-header .mat-icon,
+:host ::ng-deep mat-expansion-panel.mat-expanded .mat-expansion-panel-header-title {
+  color: #fff !important;
+}
+
+:host ::ng-deep mat-expansion-panel mat-expansion-panel-header .mat-icon,
+:host ::ng-deep mat-expansion-panel .mat-expansion-panel-header-title {
+  color: $primary !important;
+}

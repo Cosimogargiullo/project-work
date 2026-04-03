@@ -1,0 +1,124 @@
+<div class="card-generic">
+  <h2 class="title-generic">Gestione Utenti</h2>
+  <div class="bar-decorative"></div>
+
+  <div class="mb-3">
+    <div class="row g-2">
+      <div class="col-12 col-lg-5">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Ricerca</mat-label>
+          <input matInput [formControl]="searchControl" placeholder="Nome, cognome, username, email, CF" />
+        </mat-form-field>
+      </div>
+      <div class="col-12 col-lg-3">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Ruolo</mat-label>
+          <mat-select [formControl]="roleControl">
+            <mat-option [value]="null">Tutti</mat-option>
+            <mat-option *ngFor="let role of allRoles" [value]="role">{{ role }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-12 col-lg-2">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Stato</mat-label>
+          <mat-select [formControl]="statusControl">
+            <mat-option value="all">Tutti</mat-option>
+            <mat-option value="active">Attivi</mat-option>
+            <mat-option value="inactive">Non attivi</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-12 col-lg-auto d-flex align-items-end">
+        <button mat-icon-button color="primary" type="button" class="filters-reset-btn" (click)="resetFilters()" aria-label="Azzera filtri">
+          <mat-icon>filter_alt_off</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-end mb-3">
+    <button mat-raised-button color="primary" (click)="openCreateDialog()">Aggiungi utente</button>
+  </div>
+
+  <div class="data-table-wrap" *ngIf="!isMobileView">
+  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 data-table">
+    <ng-container matColumnDef="username">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="username">Username</th>
+      <td mat-cell *matCellDef="let user">{{ user.username }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="name">Nome</th>
+      <td mat-cell *matCellDef="let user">{{ user.firstName }} {{ user.lastName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="email">Email</th>
+      <td mat-cell *matCellDef="let user">{{ user.email }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="roles">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="roles">Ruoli</th>
+      <td mat-cell *matCellDef="let user">{{ (user.roles && user.roles.length) ? (user.roles.join(', ')) : '-' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="status">Stato</th>
+      <td mat-cell *matCellDef="let user">{{ getStatusLabel(user) }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef class="text-center actions-column">Azioni</th>
+      <td mat-cell *matCellDef="let user" class="text-end actions-column">
+        <button mat-button color="primary" (click)="openEditDialog(user)"><mat-icon class="login-icon">edit</mat-icon></button>
+        <button *ngIf="user?.active !== false" mat-button color="primary" (click)="deleteUser(user)"><mat-icon class="login-icon">delete</mat-icon></button>
+        <button *ngIf="user?.active === false" mat-button color="primary" (click)="reactivateUser(user)"><mat-icon class="login-icon">autorenew</mat-icon></button>
+        <button *ngIf="user?.active === false" mat-button color="warn" (click)="deleteUserPermanent(user)"><mat-icon class="login-icon">delete_forever</mat-icon></button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  </div>
+
+  <div class="responsive-data-list" *ngIf="isMobileView">
+    <div class="responsive-data-card" *ngFor="let user of dataSource.data">
+      <div class="responsive-data-row">
+        <span class="responsive-data-label">Username</span>
+        <span class="responsive-data-value">{{ user.username || '-' }}</span>
+      </div>
+      <div class="responsive-data-row">
+        <span class="responsive-data-label">Nome</span>
+        <span class="responsive-data-value">{{ user.firstName }} {{ user.lastName }}</span>
+      </div>
+      <div class="responsive-data-row">
+        <span class="responsive-data-label">Email</span>
+        <span class="responsive-data-value responsive-data-break">{{ user.email || '-' }}</span>
+      </div>
+      <div class="responsive-data-row">
+        <span class="responsive-data-label">Ruoli</span>
+        <span class="responsive-data-value">{{ (user.roles && user.roles.length) ? (user.roles.join(', ')) : '-' }}</span>
+      </div>
+      <div class="responsive-data-row">
+        <span class="responsive-data-label">Stato</span>
+        <span class="responsive-data-value">{{ getStatusLabel(user) }}</span>
+      </div>
+
+      <div class="responsive-data-actions">
+        <button mat-button color="primary" (click)="openEditDialog(user)"><mat-icon class="login-icon">edit</mat-icon></button>
+        <button *ngIf="user?.active !== false" mat-button color="primary" (click)="deleteUser(user)"><mat-icon class="login-icon">delete</mat-icon></button>
+        <button *ngIf="user?.active === false" mat-button color="primary" (click)="reactivateUser(user)"><mat-icon class="login-icon">autorenew</mat-icon></button>
+        <button *ngIf="user?.active === false" mat-button color="warn" (click)="deleteUserPermanent(user)"><mat-icon class="login-icon">delete_forever</mat-icon></button>
+      </div>
+    </div>
+
+    <div class="responsive-data-empty" *ngIf="!dataSource.data || dataSource.data.length === 0">
+      Nessun utente trovato
+    </div>
+  </div>
+
+  <mat-paginator [length]="totalUsers" [pageSize]="pageSize" [pageIndex]="pageIndex" [pageSizeOptions]="[5, 10, 20]" (page)="onPageChange($event)">
+  </mat-paginator>
+</div>

@@ -1,0 +1,27 @@
+classDiagram
+    class AuthController
+    class UserController
+    class AppointmentController
+    class AvailabilityController
+    class MedicalReportController
+
+    class AuthUserService
+    class UserService
+    class AppointmentService
+    class AvailabilityService
+    class MedicalReportService
+
+    class AppointmentRepository
+    class AvailabilityRepository
+    class MedicalReportRepository
+    class UserRepository
+
+    AuthController --> AuthUserService
+    UserController --> UserService
+    AppointmentController --> AppointmentService
+    AvailabilityController --> AvailabilityService
+    MedicalReportController --> MedicalReportService
+    AppointmentService --> AppointmentRepository
+    AvailabilityService --> AvailabilityRepository
+    MedicalReportService --> MedicalReportRepository
+    UserService --> UserRepository

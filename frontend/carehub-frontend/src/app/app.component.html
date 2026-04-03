@@ -1,0 +1,13 @@
+<mat-toolbar color="primary" class="app-toolbar">
+  <img src="assets/logo-carehub.png" alt="Carehub logo" class="navbar-logo" />
+  <span class="app-title">Carehub</span>
+  <span class="app-toolbar-spacer"></span>
+
+  <!-- Auth actions -->
+  <button mat-button *ngIf="!isAuthenticated()" routerLink="/login">Login</button>
+  <button mat-button *ngIf="isAuthenticated()" (click)="logout()">Logout</button>
+</mat-toolbar>
+
+<div class="app-shell">
+  <router-outlet />
+</div>

@@ -1,0 +1,37 @@
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+  <div class="row w-100">
+    <div class="col-12 col-md-6 offset-md-3">
+      <mat-card class="card-generic">
+        <div class="bar-decorative"></div>
+        <div class="text-center mb-3 mt-2">
+          <mat-icon class="login-icon" aria-hidden="true">lock</mat-icon>
+        </div>
+        <h2 class="title-generic">Login</h2>
+        <form [formGroup]="form" (ngSubmit)="submit()">
+          <mat-form-field appearance="outline" class="w-100 mb-3">
+            <mat-label>Username o Codice Fiscale</mat-label>
+            <input matInput formControlName="username" required autocomplete="username">
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w-100 ">
+            <mat-label>Password</mat-label>
+            <input matInput type="password" formControlName="password" required autocomplete="current-password">
+          </mat-form-field>
+
+          <div class="text-end mb-4">
+            <a routerLink="/register" class="link-generic">Registrati come paziente</a>
+          </div>
+
+          <div class="d-flex justify-content-center">
+            <button mat-raised-button color="primary" type="submit" class="input-xs w-100 mb-2"
+              [disabled]="form.invalid || loading">
+              Login
+            </button>
+          </div>
+          <div *ngIf="error" class="alert alert-danger text-center py-2 mt-2" role="alert" aria-live="assertive">
+            Credenziali non valide
+          </div>
+        </form>
+      </mat-card>
+    </div>
+  </div>
+</div>

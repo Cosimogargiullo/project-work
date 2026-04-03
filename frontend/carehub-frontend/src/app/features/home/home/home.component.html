@@ -1,0 +1,60 @@
+<main class="d-flex justify-content-center align-items-center ">
+  <div class="row w-100">
+    <div class="col-12 col-lg-11 mx-auto mt-4">
+
+      <!-- Profilo sempre aperto -->
+      <mat-expansion-panel class="profile-panel" expanded hideToggle="true">
+        <mat-expansion-panel-header class="mb-3">
+          <mat-panel-title><mat-icon class="login-icon">person</mat-icon>&nbsp;Anagrafica</mat-panel-title>
+        </mat-expansion-panel-header>
+        <app-profile></app-profile>
+      </mat-expansion-panel>
+
+      <!-- Altri pannelli: uno solo aperto alla volta, con refresh del componente a ogni apertura -->
+      <mat-accordion class="mt-4">
+
+        <mat-expansion-panel *ngIf="isAdmin" [expanded]="activePanel === 'users'" (opened)="setActivePanel('users')"
+          (closed)="onPanelClosed('users')">
+          <mat-expansion-panel-header class="mb-3">
+            <mat-panel-title><mat-icon class="login-icon">person</mat-icon>&nbsp;Gestione Utenti</mat-panel-title>
+          </mat-expansion-panel-header>
+          <app-users *ngIf="activePanel === 'users'"></app-users>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel [expanded]="activePanel === 'availability'" (opened)="setActivePanel('availability')"
+          (closed)="onPanelClosed('availability')">
+          <mat-expansion-panel-header class="mb-3">
+            <mat-panel-title>
+              <mat-icon class="login-icon">schedule</mat-icon>&nbsp;Disponibilità e appuntamenti
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="row g-3">
+            <div class="col-12 col-lg-6" *ngIf="!isPatient">
+              <app-availability *ngIf="activePanel === 'availability'"></app-availability>
+            </div>
+            <div class="col-12" [ngClass]="{ 'col-lg-6': !isPatient }">
+              <app-appointments *ngIf="activePanel === 'availability'"></app-appointments>
+            </div>
+          </div>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel [expanded]="activePanel === 'reports'" (opened)="setActivePanel('reports')"
+          (closed)="onPanelClosed('reports')">
+          <mat-expansion-panel-header class="mb-3">
+            <mat-panel-title><mat-icon class="login-icon">description</mat-icon>&nbsp;Referti</mat-panel-title>
+          </mat-expansion-panel-header>
+          <app-reports *ngIf="activePanel === 'reports'"></app-reports>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel [expanded]="activePanel === 'analytics'" (opened)="setActivePanel('analytics')"
+          (closed)="onPanelClosed('analytics')">
+          <mat-expansion-panel-header class="mb-3">
+            <mat-panel-title><mat-icon class="login-icon">analytics</mat-icon>&nbsp;Dashboard Economica</mat-panel-title>
+          </mat-expansion-panel-header>
+          <app-analytics *ngIf="activePanel === 'analytics'"></app-analytics>
+        </mat-expansion-panel>
+
+      </mat-accordion>
+    </div>
+  </div>
+</main>

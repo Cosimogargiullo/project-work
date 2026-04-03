@@ -1,0 +1,94 @@
+<div class="card-generic">
+  <h2 class="title-generic">Dashboard Economica</h2>
+  <div class="bar-decorative"></div>
+
+  <div class="mb-3">
+    <div class="row g-3">
+      <div class="col-12 col-md-4">
+        <div class="card p-3">
+          <div class="h6">Ricavi totali</div>
+          <div class="display-6 mt-2">{{ overview?.totalRevenue | number:'1.2-2' }} €</div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="card p-3">
+          <div class="h6">Numero referti</div>
+          <div class="display-6 mt-2">{{ overview?.reportsCount || 0 }}</div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="card p-3">
+          <div class="h6">Ticket medio</div>
+          <div class="display-6 mt-2">{{ overview?.averageCost | number:'1.2-2' }} €</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-12" [class.col-lg-8]="showTopDoctors" [class.col-lg-12]="!showTopDoctors">
+        <div class="card p-3">
+          <div class="h6">Andamento Annuale</div>
+          <!-- monthly chart (no daily histogram) -->
+          <div class="mt-3">
+            <div>
+              <div class="small mt-3 mb-1 text-muted">Istogramma annuale</div>
+              <div class="chart-wrap">
+                <canvas #monthlyChart width="600" height="160"></canvas>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-4" *ngIf="showTopDoctors">
+        <div class="card p-3">
+          <div class="h6">Top Medici (per ricavi)</div>
+          <div class="data-table-wrap mt-2 compact-table" *ngIf="!isMobileView">
+          <table class="table table-sm data-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Medico</th>
+                <th class="text-end">Ricavi</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let d of topDoctors; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ doctorNames[d.doctorId] || d.doctorId }}</td>
+                <td class="text-end">{{ d.totalRevenue | number:'1.2-2' }} €</td>
+              </tr>
+              <tr *ngIf="topDoctors.length === 0">
+                <td colspan="3" class="text-center">Nessun dato</td>
+              </tr>
+            </tbody>
+          </table>
+          </div>
+
+          <div class="responsive-data-list mt-2" *ngIf="isMobileView">
+            <div class="responsive-data-card" *ngFor="let d of topDoctors; let i = index">
+              <div class="responsive-data-row">
+                <span class="responsive-data-label">Posizione</span>
+                <span class="responsive-data-value">#{{ i + 1 }}</span>
+              </div>
+              <div class="responsive-data-row">
+                <span class="responsive-data-label">Medico</span>
+                <span class="responsive-data-value">{{ doctorNames[d.doctorId] || d.doctorId }}</span>
+              </div>
+              <div class="responsive-data-row">
+                <span class="responsive-data-label">Ricavi</span>
+                <span class="responsive-data-value">{{ d.totalRevenue | number:'1.2-2' }} €</span>
+              </div>
+            </div>
+
+            <div class="responsive-data-empty" *ngIf="topDoctors.length === 0">
+              Nessun dato
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,116 @@
+<div class="dialog-header position-relative">
+  <div class="bar-decorative"></div>
+  <h2 class="title-generic mt-3">
+    {{ mode === 'create' ? 'Nuovo utente' : 'Modifica utente' }}
+  </h2>
+</div>
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <mat-dialog-content>
+    <div class="row g-2">
+      <div class="col-12 col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Username</mat-label>
+          <input matInput formControlName="username" required />
+          <mat-error *ngIf="form.get('username')?.hasError('required')">Campo obbligatorio</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-12 col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" formControlName="email" />
+          <mat-error *ngIf="form.get('email')?.hasError('pattern')">Email non valida</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row g-2">
+      <div class="col-12 col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Nome</mat-label>
+          <input matInput formControlName="firstName" />
+        </mat-form-field>
+      </div>
+      <div class="col-12 col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Cognome</mat-label>
+          <input matInput formControlName="lastName" />
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row g-2">
+      <div class="col-12 col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Codice fiscale</mat-label>
+          <input matInput formControlName="fiscalCode" required maxlength="16" class="uppercase-input" />
+          <mat-hint>{{ form.get('fiscalCode')?.value?.length || 0 }}/16</mat-hint>
+          <mat-error *ngIf="form.get('fiscalCode')?.hasError('required')">Campo obbligatorio</mat-error>
+          <mat-error *ngIf="form.get('fiscalCode')?.hasError('pattern')">Formato non valido</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-12 col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Telefono</mat-label>
+          <input matInput formControlName="phone" />
+          <mat-error *ngIf="form.get('phone')?.hasError('pattern')">Numero non valido</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row g-2">
+      <div class="col-12 col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Data di nascita</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="birthDate" />
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="col-12 col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Ruolo</mat-label>
+          <mat-select formControlName="roles">
+            <mat-option *ngFor="let role of roles" [value]="role">{{ role }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.get('roles')?.hasError('required')">Seleziona un ruolo</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w-100" *ngIf="form.get('roles')?.value === USER_ROLES.MEDICO">
+          <mat-label>Specializzazione</mat-label>
+          <mat-select formControlName="specialization">
+            <mat-option *ngFor="let s of specializations" [value]="s">{{ formatSpecialization(s) }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.get('specialization')?.hasError('required')">Seleziona la specializzazione</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <ng-container *ngIf="mode === 'create'">
+      <div class="row g-2">
+        <div class="col-12 col-md-6">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Password</mat-label>
+            <input matInput type="password" formControlName="password" required />
+            <mat-error *ngIf="form.get('password')?.hasError('required')">Campo obbligatorio</mat-error>
+            <mat-error *ngIf="form.get('password')?.hasError('minlength')">Minimo 6 caratteri</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-12 col-md-6">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Conferma Password</mat-label>
+            <input matInput type="password" formControlName="confirm" required/>
+            <mat-error *ngIf="form.get('confirm')?.hasError('required')">Campo obbligatorio</mat-error>
+            <mat-error *ngIf="form.hasError('passwordsMismatch')">Le password non coincidono</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </ng-container>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="close()">Annulla</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+      {{ mode === 'create' ? 'Crea' : 'Salva' }}
+    </button>
+  </mat-dialog-actions>
+</form>

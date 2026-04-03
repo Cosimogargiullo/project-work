@@ -1,0 +1,87 @@
+<div class="dialog-header position-relative">
+  <div class="bar-decorative"></div>
+  <h2 class="title-generic mt-3">
+    {{
+    mode === dialogModes.create
+    ? 'Crea disponibilità'
+    : mode === dialogModes.edit
+    ? 'Modifica disponibilità'
+    : 'Dettaglio disponibilità'
+    }}
+  </h2>
+</div>
+<form [formGroup]="availabilityForm" (ngSubmit)="submit()" novalidate>
+  <mat-dialog-content class="dialog-content">
+    <ng-container *ngIf="!isDoctor">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Medico</mat-label>
+        <input matInput type="text" placeholder="Cerca medico per nome, cognome o username" formControlName="doctorSearch"
+          [matAutocomplete]="doctorAuto"/>
+        <mat-autocomplete #doctorAuto="matAutocomplete" [displayWith]="displayDoctor"
+          (optionSelected)="onDoctorOptionSelected($event.option.value)">
+          <mat-option *ngFor="let doctor of filteredDoctors" [value]="doctor">
+            {{ doctor.firstName }} {{ doctor.lastName }} ({{ doctor.username }})
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </ng-container>
+
+    <!-- Se l'utente è medico, non mostriamo alcun input per il medico (viene impostato automaticamente) -->
+
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Data Disponibilità</mat-label>
+      <input matInput formControlName="availableDay" [matDatepicker]="picker" [min]="today"
+        placeholder="Seleziona una data">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Durata (minuti)</mat-label>
+      <mat-select formControlName="durationMinutes">
+        <mat-option [value]="60">60 minuti</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div class="d-flex gap-2 mb-2">
+      <mat-form-field appearance="outline" class="flex-fill">
+        <mat-label>Ora inizio</mat-label>
+        <input matInput type="time" formControlName="startTime">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="flex-fill">
+        <mat-label>Ora fine</mat-label>
+        <input matInput type="time" formControlName="endTime">
+      </mat-form-field>
+    </div>
+
+    <div class="mb-2" *ngIf="mode !== dialogModes.view">
+      <button mat-raised-button color="primary" type="button" (click)="generateSlots()">
+        Genera slot
+      </button>
+    </div>
+
+    <div *ngIf="timeSlots.length">
+      <p class="mb-1" *ngIf="mode !== dialogModes.view">
+        Slot generati (clicca per escludere quelli che non vuoi creare):
+      </p>
+      <p class="mb-1" *ngIf="mode === dialogModes.view">
+        Slot attivi per questa data:
+      </p>
+      <mat-chip-listbox multiple>
+        <mat-chip-option *ngFor="let slot of timeSlots" [selected]="slot.selected" [disabled]="slot.disabled"
+          (selectionChange)="onSlotSelectionChange(slot, $event.selected)">
+          {{ slot.time }}
+        </mat-chip-option>
+      </mat-chip-listbox>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions class="dialog-actions">
+    <button mat-raised-button type="button" (click)="close()">{{ mode === dialogModes.view ? 'Chiudi' : 'Annulla' }}</button>
+    <button mat-raised-button color="primary" type="submit" *ngIf="mode !== dialogModes.view"
+      [disabled]="availabilityForm.invalid">
+      Salva
+    </button>
+  </mat-dialog-actions>
+</form>

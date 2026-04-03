@@ -1,0 +1,20 @@
+Credenziali accesso CareHub
+Password in chiaro per tutte le utenze: 123456
+
+// Admin
+- username: admin | password: 123456
+
+// Segretari
+- username: seg01 | password: 123456
+- username: seg02 | password: 123456
+- username: seg03 | password: 123456
+
+// Medici
+- username: dr.house | password: 123456
+- username: dr.ortho | password: 123456
+- username: dr.derma | password: 123456
+
+// Pazienti
+- username: pat001 | password: 123456
+- username: pat002 | password: 123456
+- username: pat003 | password: 123456

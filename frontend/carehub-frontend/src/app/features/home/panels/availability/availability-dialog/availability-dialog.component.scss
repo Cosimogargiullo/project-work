@@ -1,0 +1,17 @@
+@import 'styles/variables.scss';
+@import 'styles/utilities.scss';
+
+.dialog-header {
+	padding: 0 24px;
+}
+
+.dialog-content {
+	padding-top: 0.5rem;
+}
+
+.dialog-actions {
+	display: flex;
+	justify-content: flex-end;
+	gap: 0.5rem;
+	padding: 0 24px 24px;
+}

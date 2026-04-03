@@ -1,0 +1,10 @@
+@import '../../../../../styles/variables.scss';
+@import '../../../../../styles/utilities.scss';
+
+.chart-wrap {
+	width: 100%;
+}
+
+.compact-table {
+	--data-table-min-width: 420px;
+}

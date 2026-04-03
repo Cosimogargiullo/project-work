@@ -1,0 +1,7 @@
+erDiagram
+    USERS ||--o{ USER_ROLES : has
+    USERS ||--o{ AVAILABLE_DATES : creates
+    USERS ||--o{ APPOINTMENT : patient
+    USERS ||--o{ APPOINTMENT : doctor
+    AVAILABLE_DATES ||--o| APPOINTMENT : reserves
+    APPOINTMENT ||--o| MEDICAL_REPORT : generates
