@@ -1,0 +1,130 @@
+<div class="card-generic">
+  <h2 class="title-generic">Profilo utente</h2>
+  <div class="bar-decorative"></div>
+
+  <div class="d-flex justify-content-end mb-3">
+    <!-- Mostra Modifica solo se non in editing -->
+    <button
+      *ngIf="!isEditing"
+      type="button"
+      class="link-generic d-flex align-items-center gap-1 p-0 border-0 bg-transparent"
+      (click)="onEdit()">
+      <mat-icon class="login-icon me-1">edit</mat-icon>
+      Modifica
+    </button>
+
+    <!-- Mostra Salva/Annulla solo se in editing -->
+    <div *ngIf="isEditing" class="d-flex gap-2">
+      <button type="button" mat-raised-button color="primary" (click)="onSave()">
+        <mat-icon class="me-1">save</mat-icon>
+        Salva
+      </button>
+      <button type="button" mat-button (click)="onCancel()">
+        <mat-icon class="me-1">close</mat-icon>
+        Annulla
+      </button>
+    </div>
+  </div>
+
+  <form autocomplete="off">
+    <div class="row g-3">
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Username</mat-label>
+          <input
+            matInput
+            [(ngModel)]="user.username"
+            name="username"
+            [disabled]="!isEditing" />
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            [(ngModel)]="user.email"
+            name="email"
+            [disabled]="!isEditing" />
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Nome</mat-label>
+          <input
+            matInput
+            [(ngModel)]="user.firstName"
+            name="firstName"
+            [disabled]="!isEditing" />
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Cognome</mat-label>
+          <input
+            matInput
+            [(ngModel)]="user.lastName"
+            name="lastName"
+            [disabled]="!isEditing" />
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Codice fiscale</mat-label>
+          <input
+            matInput
+            [(ngModel)]="user.fiscalCode"
+            (ngModelChange)="onFiscalCodeChange($event)"
+            name="fiscalCode"
+            maxlength="16"
+            [disabled]="!isEditing" />
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Data di nascita</mat-label>
+          <input
+            matInput
+            [matDatepicker]="birthDatePicker"
+            [(ngModel)]="birthDate"
+            name="birthDate"
+            [max]="maxBirthDate"
+            [disabled]="!isEditing" />
+          <mat-datepicker-toggle matSuffix [for]="birthDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #birthDatePicker></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-6">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Telefono</mat-label>
+          <input
+            matInput
+            [(ngModel)]="user.phone"
+            name="phone"
+            (input)="onPhoneInput($event)"
+            [disabled]="!isEditing" />
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-6">
+        <mat-form-field *ngIf="isDoctor" appearance="outline" class="w-100">
+          <mat-label>Specializzazione</mat-label>
+          <mat-select
+            [(ngModel)]="user.specialization"
+            name="specialization"
+            [disabled]="!isEditing">
+            <mat-option *ngFor="let spec of specializations" [value]="spec">
+              {{ formatSpecialization(spec) }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</div>

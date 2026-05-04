@@ -1,0 +1,21 @@
+<div class="dialog-header position-relative">
+  <div class="bar-decorative"></div>
+  <h1 mat-dialog-title class="title-generic text-white m-0">
+    {{ data.titolo || 'Conferma azione' }}
+  </h1>
+</div>
+
+<div mat-dialog-content class="card-generic">
+  <p class="text-center" role="status" aria-live="polite">
+    {{ data.messaggio || 'Sei sicuro di voler procedere?' }}
+  </p>
+</div>
+
+<div mat-dialog-actions class="d-flex justify-content-end gap-2">
+  <button mat-button cdkFocusInitial (click)="chiudiDialog()">
+    {{ data.cancelLabel || 'Annulla' }}
+  </button>
+  <button mat-raised-button color="primary" (click)="confirmDialog()">
+    {{ data.confirmLabel || 'Conferma' }}
+  </button>
+</div>

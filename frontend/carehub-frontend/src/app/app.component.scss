@@ -1,0 +1,32 @@
+/* Logo styles for navbar */
+.navbar-logo {
+	height: 36px;
+	margin-right: 8px;
+	object-fit: contain;
+}
+
+.app-title {
+	margin-top: 8px;
+	vertical-align: middle;
+	font-weight: 600;
+}
+
+/* Apply primary color from global CSS variable to the toolbar */
+.app-toolbar {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 1000;
+	background-color: var(--primary) !important;
+}
+
+.app-toolbar-spacer {
+	flex: 1 1 auto;
+}
+
+.app-shell {
+	padding: 16px;
+	padding-top: 72px;
+}
+

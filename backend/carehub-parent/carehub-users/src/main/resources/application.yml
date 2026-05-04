@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/carehub
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        default_schema: carehub
+        format_sql: true
+    show-sql: false
+
+security:
+  jwt:
+    # Usa una chiave Base64 sicura in produzione
+    secret: dGVzdC1zZWNyZXQtMTIzNDU2Nzg5MA==
+    access-ttl-seconds: 3600
+
+springdoc:
+  packagesToScan: it.carehub.auth.api

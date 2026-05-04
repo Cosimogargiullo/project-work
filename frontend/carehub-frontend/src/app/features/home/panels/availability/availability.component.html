@@ -1,0 +1,88 @@
+<div class="card-generic">
+  <h2 class="title-generic">Gestione Disponibilità</h2>
+  <div class="bar-decorative"></div>
+
+  <!-- Filtro medico visibile solo a segreteria/admin; il filtro data è visibile a segreteria e medico -->
+    <div class="mb-3">
+    <div class="d-flex align-items-end flex-wrap gap-2">
+
+      <mat-form-field appearance="outline" class="flex-fill me-2" *ngIf="isSecretary">
+          <mat-label>Filtro medico</mat-label>
+          <input type="text" matInput [formControl]="doctorSearchControl"
+            placeholder="Cerca per nome, cognome, username o email" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="me-2" [class.w-100]="isDoctor && !isSecretary" *ngIf="isSecretary || isDoctor">
+          <mat-label>Data</mat-label>
+          <input matInput [matDatepicker]="picker" [formControl]="dateFilterControl" [min]="today" />
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <button mat-icon-button color="primary" type="button" class="filters-reset-btn" (click)="resetFilters()" aria-label="Azzera filtri">
+				<mat-icon>filter_alt_off</mat-icon>
+			</button>
+
+      </div>
+  </div>
+
+  <div class="d-flex justify-content-end mb-3">
+    <button mat-raised-button color="primary" (click)="openDialog()">Aggiungi Disponibilità</button>
+  </div>
+
+  <div class="data-table-wrap" *ngIf="!isMobileView">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 data-table">
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef> Data </th>
+      <td mat-cell *matCellDef="let availability"> {{ availability.date | date:'dd/MM/yyyy'}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="doctorName">
+      <th mat-header-cell *matHeaderCellDef> Medico </th>
+      <td mat-cell *matCellDef="let availability"> {{ availability.doctorName }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef class="text-center actions-column"> Azioni </th>
+      <td mat-cell *matCellDef="let availability" class="text-end actions-column">
+        <button mat-button color="primary" (click)="viewAvailability(availability)"><mat-icon
+            class="login-icon">visibility</mat-icon></button>
+        <button mat-button color="primary" *ngIf="isSecretary || isDoctor" (click)="editAvailability(availability)"><mat-icon
+            class="login-icon">edit</mat-icon></button>
+        <button mat-button color="primary" *ngIf="isSecretary || isDoctor" (click)="deleteAvailability(availability)"><mat-icon
+            class="login-icon">delete</mat-icon></button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  </div>
+
+  <div class="responsive-data-list" *ngIf="isMobileView">
+    <div class="responsive-data-card" *ngFor="let availability of dataSource.data">
+      <div class="responsive-data-row">
+        <span class="responsive-data-label">Data</span>
+        <span class="responsive-data-value">{{ availability.date | date:'dd/MM/yyyy' }}</span>
+      </div>
+      <div class="responsive-data-row" *ngIf="isSecretary">
+        <span class="responsive-data-label">Medico</span>
+        <span class="responsive-data-value">{{ availability.doctorName || '-' }}</span>
+      </div>
+
+      <div class="responsive-data-actions">
+        <button mat-button color="primary" (click)="viewAvailability(availability)"><mat-icon class="login-icon">visibility</mat-icon></button>
+        <button mat-button color="primary" *ngIf="isSecretary || isDoctor" (click)="editAvailability(availability)"><mat-icon class="login-icon">edit</mat-icon></button>
+        <button mat-button color="primary" *ngIf="isSecretary || isDoctor" (click)="deleteAvailability(availability)"><mat-icon class="login-icon">delete</mat-icon></button>
+      </div>
+    </div>
+
+    <div class="responsive-data-empty" *ngIf="!dataSource.data || dataSource.data.length === 0">
+      Nessuna disponibilita trovata
+    </div>
+  </div>
+
+  <mat-paginator [length]="totalAvailabilities" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]"
+    (page)="onPageChange($event)">
+  </mat-paginator>
+</div>

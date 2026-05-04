@@ -1,0 +1,18 @@
+# Render manifest for deploying backend (Docker) on Render.
+# NOTE: Render's manifest schema is strict. Some fields for static sites/databases
+# may not be accepted here depending on Render's blueprint version. To avoid
+# schema errors, this manifest defines only the backend Docker web service.
+
+services:
+  - type: web
+    name: carehub-backend
+    runtime: docker
+    plan: free
+    dockerfilePath: backend/carehub-parent/carehub-application/Dockerfile
+    buildCommand: ./mvnw -DskipTests package -f backend/carehub-parent/carehub-application/pom.xml
+    startCommand: java -jar target/*.jar
+    autoDeploy: true
+
+# Create the frontend (Static Site) and Postgres (Database) via the Render UI
+# if the manifest validator rejects those resource types. See README_RENDER.md
+# for step-by-step instructions to set up the static site and managed Postgres.

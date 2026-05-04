@@ -1,0 +1,232 @@
+@import 'styles/variables';
+@import 'styles/utilities';
+@import 'styles/data-display';
+
+:root {
+	--primary: #{$primary};
+	// RGB components for box-shadow (generated from $primary)
+	--primary-rgb: #{red($primary)}, #{green($primary)}, #{blue($primary)};
+	--mdc-theme-primary: #{$primary};
+	--mdc-theme-on-primary: #ffffff;
+	--mdc-theme-secondary: #{$primary};
+	/* Material datepicker vars -> map to our primary colors */
+	--mat-datepicker-calendar-date-selected-state-background-color: var(--primary);
+	--mat-datepicker-calendar-date-selected-state-text-color: var(--mdc-theme-on-primary);
+	/* Chip selected background and label color (MDC chips) */
+	--mdc-chip-elevated-selected-container-color: var(--primary);
+	--mdc-chip-elevated-selected-label-color: var(--mdc-theme-on-primary);
+}
+input[disabled],
+textarea[disabled],
+select[disabled] {
+	background-color: #fff !important;
+	opacity: 1 !important;
+	color: inherit !important;
+}
+
+.mat-input-element[disabled] {
+	color: inherit !important;
+	-webkit-text-fill-color: currentColor !important;
+}
+.mdc-text-field--disabled .mdc-text-field__input,
+.mat-mdc-form-field.mat-form-field-disabled .mat-mdc-input-element {
+	background-color: #fff !important;
+	opacity: 1 !important;
+	color: inherit !important;
+	-webkit-text-fill-color: currentColor !important;
+}
+
+/* Fallback overrides for Material buttons and inputs (legacy + MDC variants) */
+/* Buttons: raised/flat/stroked/fab get filled primary background */
+.mat-raised-button.mat-primary,
+.mat-flat-button.mat-primary,
+.mat-stroked-button.mat-primary,
+.mat-mdc-raised-button.mat-primary,
+.mat-fab.mat-primary,
+.mat-mini-fab.mat-primary,
+.mat-mdc-fab.mat-primary {
+	background-color: var(--primary) !important;
+	color: var(--mdc-theme-on-primary) !important;
+	border-color: var(--primary) !important;
+}
+
+/* Disabled raised buttons: use a lighter fill to make disabled state clear */
+.mat-mdc-raised-button:disabled,
+.mat-mdc-raised-button.mat-mdc-button-disabled {
+	background-color: color-mix(in srgb, var(--primary) 35%, #ffffff) !important;
+	color: rgba(255, 255, 255, 0.9) !important;
+	border-color: color-mix(in srgb, var(--primary) 35%, #ffffff) !important;
+}
+
+/* Text buttons: no background, colored text */
+.mat-button.mat-primary,
+.mat-mdc-button.mat-primary {
+	background: transparent !important;
+	color: var(--primary) !important;
+}
+
+/* Disabled text buttons: keep transparent bg and lighten text/icon color */
+.mat-button.mat-primary:disabled,
+.mat-button.mat-primary.mat-button-disabled,
+.mat-mdc-button.mat-primary:disabled,
+.mat-mdc-button.mat-primary.mat-mdc-button-disabled {
+	color: color-mix(in srgb, var(--primary) 35%, #ffffff) !important;
+	background: transparent !important;
+}
+
+/* Icon buttons: color the icon */
+.mat-icon-button.mat-primary,
+.mat-mdc-icon-button.mat-primary {
+	color: var(--primary) !important;
+	background: transparent !important;
+}
+
+/* Disabled icon buttons: lighten icon color for clearer disabled state */
+.mat-icon-button.mat-primary:disabled,
+.mat-icon-button.mat-primary.mat-button-disabled,
+.mat-mdc-icon-button.mat-primary:disabled,
+.mat-mdc-icon-button.mat-primary.mat-mdc-button-disabled {
+	color: color-mix(in srgb, var(--primary) 35%, #ffffff) !important;
+	background: transparent !important;
+}
+
+/* Ensure icons inside buttons inherit the correct color */
+.mat-button .mat-icon,
+.mat-raised-button .mat-icon,
+.mat-stroked-button .mat-icon,
+.mat-flat-button .mat-icon,
+.mat-icon-button .mat-icon {
+	color: inherit !important;
+	fill: currentColor !important;
+}
+
+/* Input focus outlines / ripples */
+.mat-form-field.mat-focused .mat-form-field-outline,
+.mat-form-field-appearance-outline .mat-form-field-outline,
+.mat-mdc-form-field.mat-focused .mat-mdc-input-element:focus {
+	border-color: var(--primary) !important;
+}
+
+/* Additional overrides for MDC-based outline selectors */
+.mat-mdc-form-field.mat-focused .mdc-notched-outline,
+.mat-mdc-form-field .mdc-notched-outline--upgraded,
+.mdc-text-field--focused .mdc-notched-outline,
+.mat-mdc-text-field.mdc-text-field--focused .mdc-notched-outline,
+.mat-form-field.mat-focused .mat-form-field-outline,
+.mat-form-field-appearance-outline .mat-form-field-outline {
+	border-color: var(--primary) !important;
+	color: var(--primary) !important;
+}
+
+.mat-form-field .mat-form-field-ripple {
+	background-color: var(--primary) !important;
+}
+
+/* MDC ripple/focus shadow */
+.mdc-text-field--focused .mdc-text-field__input,
+.mat-mdc-input-element:focus {
+	/* remove inner shadow that creates unwanted inner border */
+	box-shadow: none !important;
+	outline: none !important;
+}
+
+/* Ensure native inputs don't show browser outline */
+input:focus,
+textarea:focus,
+select:focus {
+	outline: none !important;
+	box-shadow: none !important;
+}
+
+/* Force MDC notched outline stroke/color to primary */
+.mdc-notched-outline,
+.mdc-notched-outline__leading,
+.mdc-notched-outline__trailing,
+.mdc-notched-outline__notch {
+	stroke: var(--primary) !important;
+	border-color: var(--primary) !important;
+}
+
+/* Also enforce for mat-form-field outline parts (legacy) */
+.mat-form-field-outline,
+.mat-form-field-outline-thick,
+.mat-form-field-outline-start,
+.mat-form-field-outline-end {
+	border-color: var(--primary) !important;
+}
+
+/* Remove extra inner borders created by some MDC variants */
+.mat-mdc-input-element::before,
+.mat-mdc-input-element::after,
+.mdc-text-field__input::before,
+.mdc-text-field__input::after {
+	box-shadow: none !important;
+	border: none !important;
+}
+
+/* Label color: make mat-label primary when focused or floated */
+.mat-form-field.mat-focused .mat-form-field-label,
+.mat-form-field.mat-focused .mat-form-field-label .mat-label,
+.mat-form-field.mat-focused .mat-form-field-label.mat-form-field-can-float,
+.mat-form-field .mat-form-field-label.mat-form-field-should-float,
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-label,
+.mat-mdc-form-field.mat-focused .mat-mdc-floating-label,
+.mat-mdc-form-field .mat-mdc-floating-label.mat-mdc-floating-label--float,
+.mdc-text-field--focused .mdc-floating-label,
+.mdc-floating-label.mdc-floating-label--float {
+	color: var(--primary) !important;
+	fill: var(--primary) !important;
+}
+
+/* Datepicker: force selected date background/text and calendar icon color */
+.mat-calendar-body-selected,
+.mat-calendar-body-selected .mat-calendar-body-label,
+.mat-calendar-body-selected .mat-calendar-body-cell {
+	background-color: var(--primary) !important;
+	color: var(--mdc-theme-on-primary) !important;
+}
+
+/* Some Material versions use these variables/classes inside the calendar content */
+.mat-datepicker-content .mat-calendar .mat-calendar-body-selected {
+	background-color: var(--primary) !important;
+	color: var(--mdc-theme-on-primary) !important;
+}
+
+/* Datepicker toggle / calendar icon */
+.mat-datepicker-toggle .mat-icon,
+.mat-datepicker-toggle .mat-button-wrapper .mat-icon,
+.mat-datepicker-toggle .mat-icon-button .mat-icon {
+	color: var(--primary) !important;
+	fill: var(--primary) !important;
+}
+
+/* Ensure selected cell stroke for SVG-based calendars */
+.mat-calendar-body-selected .mat-calendar-body-cell-content,
+.mat-calendar-body-selected .mat-calendar-body-label {
+	background-color: transparent !important;
+	color: var(--mdc-theme-on-primary) !important;
+}
+
+/* Inline SVG in toggle uses `fill="currentColor"` — set `color` on the container/svg */
+svg.mat-datepicker-toggle-default-icon,
+.mat-datepicker-toggle svg.mat-datepicker-toggle-default-icon,
+.mat-datepicker-toggle .mat-icon,
+.mat-datepicker-toggle .mat-icon-button .mat-icon {
+	color: var(--primary) !important;
+	fill: var(--primary) !important;
+}
+
+/* Override legacy hardcoded chip selected color to use app primary */
+.mat-mdc-standard-chip.mat-mdc-chip-selected.mat-primary,
+.mat-mdc-standard-chip.mat-mdc-chip-highlighted.mat-primary,
+.mat-mdc-chip.mat-mdc-chip-selected.mat-primary,
+.mat-mdc-chip.mat-mdc-chip-highlighted.mat-primary,
+.mat-chip.mat-chip-selected.mat-primary,
+.mat-chip.mat-chip-highlighted.mat-primary {
+	--mdc-chip-flat-disabled-selected-container-color: var(--primary) !important;
+	--mdc-chip-elevated-disabled-container-color: var(--primary) !important;
+	--mdc-chip-elevated-selected-container-color: var(--primary) !important;
+	--mdc-chip-elevated-selected-label-color: var(--mdc-theme-on-primary) !important;
+	color: var(--mdc-theme-on-primary) !important;
+}
+

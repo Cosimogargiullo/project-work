@@ -1,0 +1,2203 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Carehub API",
+        "description": "API per gestione pazienti, medici, appuntamenti",
+        "version": "v1"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8080",
+            "description": "Generated server url"
+        }
+    ],
+    "security": [
+        {
+            "bearer-jwt": []
+        }
+    ],
+    "paths": {
+        "/api/users/{id}": {
+            "get": {
+                "tags": [
+                    "user-controller"
+                ],
+                "operationId": "getUserById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "user-controller"
+                ],
+                "operationId": "updateUser",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateUserRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SimpleResult"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "user-controller"
+                ],
+                "operationId": "deleteUser",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SimpleResult"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/reports/{id}": {
+            "get": {
+                "tags": [
+                    "medical-report-controller"
+                ],
+                "operationId": "getById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MedicalReport"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "medical-report-controller"
+                ],
+                "operationId": "update",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "patientId",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "doctorId",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "appointmentId",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "summary",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "notes",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "cost",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "file": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SimpleResult"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "medical-report-controller"
+                ],
+                "operationId": "delete",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SimpleResult"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/availabilities": {
+            "get": {
+                "tags": [
+                    "availability-controller"
+                ],
+                "operationId": "getAll",
+                "parameters": [
+                    {
+                        "name": "isActive",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/AvailableDate"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "availability-controller"
+                ],
+                "operationId": "update_1",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateAvailableSlotsRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SimpleResult"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "availability-controller"
+                ],
+                "operationId": "create",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateAvailableSlotsRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SimpleResult"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/appointments/{id}": {
+            "get": {
+                "tags": [
+                    "appointment-controller"
+                ],
+                "operationId": "getById_1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "includeInactive",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Appointment"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "appointment-controller"
+                ],
+                "operationId": "update_2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Appointment"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SimpleResult"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "appointment-controller"
+                ],
+                "operationId": "delete_1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SimpleResult"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/{id}/reactivate": {
+            "post": {
+                "tags": [
+                    "user-controller"
+                ],
+                "operationId": "reactivateUser",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SimpleResult"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/reports": {
+            "get": {
+                "tags": [
+                    "medical-report-controller"
+                ],
+                "operationId": "getAll_1",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/MedicalReport"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "medical-report-controller"
+                ],
+                "operationId": "create_1",
+                "parameters": [
+                    {
+                        "name": "patientId",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "doctorId",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "appointmentId",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "summary",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "notes",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "cost",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "file": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "required": [
+                                    "file"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SimpleResult"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/reports/filter": {
+            "post": {
+                "tags": [
+                    "medical-report-controller"
+                ],
+                "operationId": "filter",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MedicalReportFilter"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/MedicalReport"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/register": {
+            "post": {
+                "tags": [
+                    "auth-controller"
+                ],
+                "operationId": "register",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegisterUserRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SimpleResult"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/register-user": {
+            "post": {
+                "tags": [
+                    "auth-controller"
+                ],
+                "operationId": "registerUser",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegisterUserRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SimpleResult"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/register-patient": {
+            "post": {
+                "tags": [
+                    "auth-controller"
+                ],
+                "operationId": "registerPatient",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegisterUserRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SimpleResult"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/login": {
+            "post": {
+                "tags": [
+                    "auth-controller"
+                ],
+                "operationId": "login",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/appointments": {
+            "get": {
+                "tags": [
+                    "appointment-controller"
+                ],
+                "operationId": "getAll_2",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Appointment"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "appointment-controller"
+                ],
+                "operationId": "create_2",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Appointment"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SimpleResult"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/appointments/filter": {
+            "post": {
+                "tags": [
+                    "appointment-controller"
+                ],
+                "operationId": "filter_1",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AppointmentFilter"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Appointment"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users": {
+            "get": {
+                "tags": [
+                    "user-controller"
+                ],
+                "operationId": "getAllUsers",
+                "parameters": [
+                    {
+                        "name": "active",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/User"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/{id}/visit-type": {
+            "get": {
+                "tags": [
+                    "user-controller"
+                ],
+                "operationId": "getVisitTypeByDoctorId",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "enum": [
+                                            "VISITA_CARDIOLOGICA",
+                                            "VISITA_ORTOPEDICA",
+                                            "VISITA_DERMATOLOGICA"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/patient-autocomplete": {
+            "get": {
+                "tags": [
+                    "user-controller"
+                ],
+                "operationId": "patientAutocomplete",
+                "parameters": [
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/User"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/doctor-autocomplete": {
+            "get": {
+                "tags": [
+                    "user-controller"
+                ],
+                "operationId": "doctorAutocomplete",
+                "parameters": [
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "visitType",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/User"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/reports/{id}/file": {
+            "get": {
+                "tags": [
+                    "medical-report-controller"
+                ],
+                "operationId": "downloadFile",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "byte"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/reports/patient/{id}": {
+            "get": {
+                "tags": [
+                    "medical-report-controller"
+                ],
+                "operationId": "getByPatientId",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/MedicalReport"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/reports/doctor/{id}": {
+            "get": {
+                "tags": [
+                    "medical-report-controller"
+                ],
+                "operationId": "getByDoctorId",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/MedicalReport"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/reports/appointment/{id}": {
+            "get": {
+                "tags": [
+                    "medical-report-controller"
+                ],
+                "operationId": "getByAppointmentId",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MedicalReport"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/reports/analytics/patient/{patientId}/overview": {
+            "get": {
+                "tags": [
+                    "reports-analytics-controller"
+                ],
+                "operationId": "overviewByPatient",
+                "parameters": [
+                    {
+                        "name": "patientId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "from",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        }
+                    },
+                    {
+                        "name": "to",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AnalyticsOverviewDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/reports/analytics/patient/{patientId}/monthly": {
+            "get": {
+                "tags": [
+                    "reports-analytics-controller"
+                ],
+                "operationId": "monthlyByPatient",
+                "parameters": [
+                    {
+                        "name": "patientId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "from",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        }
+                    },
+                    {
+                        "name": "to",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/MonthlyRevenueDto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/reports/analytics/overview": {
+            "get": {
+                "tags": [
+                    "reports-analytics-controller"
+                ],
+                "operationId": "overviewAll",
+                "parameters": [
+                    {
+                        "name": "from",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        }
+                    },
+                    {
+                        "name": "to",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AnalyticsOverviewDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/reports/analytics/monthly": {
+            "get": {
+                "tags": [
+                    "reports-analytics-controller"
+                ],
+                "operationId": "monthlyAll",
+                "parameters": [
+                    {
+                        "name": "from",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        }
+                    },
+                    {
+                        "name": "to",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/MonthlyRevenueDto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/reports/analytics/doctor/{doctorId}/overview": {
+            "get": {
+                "tags": [
+                    "reports-analytics-controller"
+                ],
+                "operationId": "overviewByDoctor",
+                "parameters": [
+                    {
+                        "name": "doctorId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "from",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        }
+                    },
+                    {
+                        "name": "to",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AnalyticsOverviewDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/reports/analytics/doctor/{doctorId}/monthly": {
+            "get": {
+                "tags": [
+                    "reports-analytics-controller"
+                ],
+                "operationId": "monthlyByDoctor",
+                "parameters": [
+                    {
+                        "name": "doctorId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "from",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        }
+                    },
+                    {
+                        "name": "to",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/MonthlyRevenueDto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/reports/analytics/by-doctor": {
+            "get": {
+                "tags": [
+                    "reports-analytics-controller"
+                ],
+                "operationId": "byDoctor",
+                "parameters": [
+                    {
+                        "name": "from",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        }
+                    },
+                    {
+                        "name": "to",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        }
+                    },
+                    {
+                        "name": "patientId",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "default": 10
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/DoctorRevenueDto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/availabilities/{id}": {
+            "get": {
+                "tags": [
+                    "availability-controller"
+                ],
+                "operationId": "getById_2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AvailableDate"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/availabilities/durations": {
+            "get": {
+                "tags": [
+                    "availability-controller"
+                ],
+                "operationId": "getDurations",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/availabilities/doctor/{doctorId}": {
+            "get": {
+                "tags": [
+                    "availability-controller"
+                ],
+                "operationId": "getByDoctor",
+                "parameters": [
+                    {
+                        "name": "doctorId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "isActive",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/AvailableDate"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/availabilities/doctor/{doctorId}/date/{date}": {
+            "get": {
+                "tags": [
+                    "availability-controller"
+                ],
+                "operationId": "getSlotsByDoctorAndDate",
+                "parameters": [
+                    {
+                        "name": "doctorId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "date",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "isActive",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "notBooked",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CreateAvailableSlotsRequest"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "availability-controller"
+                ],
+                "operationId": "deleteByDoctorAndDate",
+                "parameters": [
+                    {
+                        "name": "doctorId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "date",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SimpleResult"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/appointments/visit-types": {
+            "get": {
+                "tags": [
+                    "appointment-controller"
+                ],
+                "operationId": "getVisitTypes",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "enum": [
+                                            "VISITA_CARDIOLOGICA",
+                                            "VISITA_ORTOPEDICA",
+                                            "VISITA_DERMATOLOGICA"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/appointments/statuses": {
+            "get": {
+                "tags": [
+                    "appointment-controller"
+                ],
+                "operationId": "getStatuses",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "enum": [
+                                            "PRENOTATO",
+                                            "EFFETTUATA"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/{id}/permanent": {
+            "delete": {
+                "tags": [
+                    "user-controller"
+                ],
+                "operationId": "deleteUserPermanently",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SimpleResult"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "UpdateUserRequest": {
+                "type": "object",
+                "properties": {
+                    "firstName": {
+                        "type": "string"
+                    },
+                    "lastName": {
+                        "type": "string"
+                    },
+                    "username": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "phone": {
+                        "type": "string"
+                    },
+                    "fiscalCode": {
+                        "type": "string"
+                    },
+                    "birthDate": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "roles": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "uniqueItems": true
+                    },
+                    "specialization": {
+                        "type": "string"
+                    }
+                }
+            },
+            "SimpleResult": {
+                "type": "object",
+                "properties": {
+                    "result": {
+                        "type": "string"
+                    },
+                    "resultMessageHeader": {
+                        "type": "string"
+                    },
+                    "resultMessage": {
+                        "type": "string"
+                    }
+                }
+            },
+            "CreateAvailableSlotsRequest": {
+                "type": "object",
+                "properties": {
+                    "doctorId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "availableDay": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "durationMinutes": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "slots": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SlotsDto"
+                        }
+                    }
+                }
+            },
+            "SlotsDto": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "time": {
+                        "type": "string"
+                    },
+                    "selected": {
+                        "type": "boolean"
+                    },
+                    "booked": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "Appointment": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "patientId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "doctorId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "availabilityId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "visitType": {
+                        "type": "string",
+                        "enum": [
+                            "VISITA_CARDIOLOGICA",
+                            "VISITA_ORTOPEDICA",
+                            "VISITA_DERMATOLOGICA"
+                        ]
+                    },
+                    "appointmentDay": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "appointmentTime": {
+                        "type": "string",
+                        "example": "14:30:00"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "PRENOTATO",
+                            "EFFETTUATA"
+                        ]
+                    },
+                    "notes": {
+                        "type": "string"
+                    },
+                    "active": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "MedicalReportFilter": {
+                "type": "object",
+                "properties": {
+                    "patientId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "doctorId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "appointmentId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "fromDate": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "toDate": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "MedicalReport": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "patientId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "doctorId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "appointmentId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "summary": {
+                        "type": "string"
+                    },
+                    "notes": {
+                        "type": "string"
+                    },
+                    "cost": {
+                        "type": "number"
+                    },
+                    "fileName": {
+                        "type": "string"
+                    },
+                    "contentType": {
+                        "type": "string"
+                    },
+                    "reportDate": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "RegisterUserRequest": {
+                "type": "object",
+                "properties": {
+                    "firstName": {
+                        "type": "string"
+                    },
+                    "lastName": {
+                        "type": "string"
+                    },
+                    "username": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    },
+                    "phone": {
+                        "type": "string"
+                    },
+                    "fiscalCode": {
+                        "type": "string"
+                    },
+                    "birthDate": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "specialization": {
+                        "type": "string"
+                    },
+                    "roles": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "uniqueItems": true
+                    }
+                }
+            },
+            "LoginRequest": {
+                "type": "object",
+                "properties": {
+                    "username": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "password": {
+                        "type": "string",
+                        "minLength": 1
+                    }
+                }
+            },
+            "AppointmentFilter": {
+                "type": "object",
+                "properties": {
+                    "patientId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "doctorId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "visitType": {
+                        "type": "string",
+                        "enum": [
+                            "VISITA_CARDIOLOGICA",
+                            "VISITA_ORTOPEDICA",
+                            "VISITA_DERMATOLOGICA"
+                        ]
+                    },
+                    "fromDate": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "toDate": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "PRENOTATO",
+                            "EFFETTUATA"
+                        ]
+                    }
+                }
+            },
+            "User": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "firstName": {
+                        "type": "string"
+                    },
+                    "lastName": {
+                        "type": "string"
+                    },
+                    "username": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "passwordHash": {
+                        "type": "string"
+                    },
+                    "phone": {
+                        "type": "string"
+                    },
+                    "fiscalCode": {
+                        "type": "string"
+                    },
+                    "birthDate": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "specialization": {
+                        "type": "string",
+                        "enum": [
+                            "CARDIOLOGIA",
+                            "ORTOPEDIA",
+                            "DERMATOLOGIA"
+                        ]
+                    },
+                    "active": {
+                        "type": "boolean"
+                    },
+                    "roles": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "ADMIN",
+                                "MEDICO",
+                                "SEGRETERIA",
+                                "PAZIENTE"
+                            ]
+                        },
+                        "uniqueItems": true
+                    }
+                }
+            },
+            "AnalyticsOverviewDto": {
+                "type": "object",
+                "properties": {
+                    "totalRevenue": {
+                        "type": "number"
+                    },
+                    "reportsCount": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "averageCost": {
+                        "type": "number"
+                    }
+                }
+            },
+            "MonthlyRevenueDto": {
+                "type": "object",
+                "properties": {
+                    "month": {
+                        "type": "string"
+                    },
+                    "totalRevenue": {
+                        "type": "number"
+                    },
+                    "reportsCount": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            },
+            "DoctorRevenueDto": {
+                "type": "object",
+                "properties": {
+                    "doctorId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "totalRevenue": {
+                        "type": "number"
+                    },
+                    "reportsCount": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            },
+            "AvailableDate": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "doctorId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "availableDay": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "availableTime": {
+                        "type": "string",
+                        "example": "14:30:00"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "durationMinutes": {
+                        "type": "string",
+                        "enum": [
+                            "MIN_60"
+                        ]
+                    },
+                    "active": {
+                        "type": "boolean"
+                    },
+                    "booked": {
+                        "type": "boolean"
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "bearer-jwt": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}

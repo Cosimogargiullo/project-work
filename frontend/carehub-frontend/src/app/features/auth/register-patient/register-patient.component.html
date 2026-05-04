@@ -1,0 +1,68 @@
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+  <div class="row w-100">
+    <div class="col-12 col-md-6 offset-md-3">
+      <mat-card class="card-generic">
+        <div class="bar-decorative"></div>
+        <h2 class="title-generic">Registrazione Paziente</h2>
+        <form [formGroup]="form" (ngSubmit)="submit()">
+          <div class="d-flex flex-wrap gap-3">
+            <mat-form-field appearance="outline" class="input-md mb-3">
+              <mat-label>Username</mat-label>
+              <input matInput formControlName="username" required>
+              <mat-error *ngIf="form.controls.username.hasError('required')">Campo obbligatorio</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="input-md mb-3">
+              <mat-label>Nome</mat-label>
+              <input matInput formControlName="firstName">
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="input-md mb-3">
+              <mat-label>Cognome</mat-label>
+              <input matInput formControlName="lastName">
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="input-md mb-3">
+              <mat-label>Codice fiscale</mat-label>
+              <input matInput formControlName="fiscalCode" required maxlength="16" class="uppercase-input">
+              <mat-hint>{{ form.controls.fiscalCode.value?.length || 0 }}/16</mat-hint>
+              <mat-error *ngIf="form.controls.fiscalCode.hasError('required')">Campo obbligatorio</mat-error>
+              <mat-error *ngIf="form.controls.fiscalCode.hasError('pattern')">Formato non valido (16 caratteri
+                A-Z/0-9)</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="input-md mb-3">
+              <mat-label>Telefono</mat-label>
+              <input matInput formControlName="phone">
+              <mat-error *ngIf="form.controls.phone.hasError('pattern')">Numero non valido</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="input-md mb-3">
+              <mat-label>Data di nascita</mat-label>
+              <input matInput [matDatepicker]="picker" formControlName="birthDate">
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="input-md mb-3">
+              <mat-label>Password</mat-label>
+              <input matInput type="password" formControlName="password" required>
+              <mat-error *ngIf="form.controls.password.hasError('required')">Campo obbligatorio</mat-error>
+              <mat-error *ngIf="form.controls.password.hasError('minlength')">Minimo 6 caratteri</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="input-md mb-3">
+              <mat-label>Conferma Password</mat-label>
+              <input matInput type="password" formControlName="confirm" required>
+              <mat-error *ngIf="form.controls.confirm.hasError('required')">Campo obbligatorio</mat-error>
+              <mat-error *ngIf="form.hasError('passwordsMismatch')">Le password non coincidono</mat-error>
+            </mat-form-field>
+          </div>
+          <mat-form-field appearance="outline" class="mb-3">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" formControlName="email">
+            <mat-error *ngIf="form.controls.email.hasError('pattern')">Email non valida</mat-error>
+          </mat-form-field>
+          <div class="d-flex justify-content-center">
+            <button mat-raised-button color="primary" class="input-xs mb-2" type="submit" [disabled]="form.invalid || loading">
+              Crea account
+            </button>
+          </div>
+        </form>
+      </mat-card>
+    </div>
+  </div>
+</div>

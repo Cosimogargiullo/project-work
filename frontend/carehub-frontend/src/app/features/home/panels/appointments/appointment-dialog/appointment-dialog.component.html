@@ -1,0 +1,115 @@
+<div class="dialog-header position-relative">
+	<div class="bar-decorative"></div>
+	<h2 class="title-generic mt-3">
+		{{
+		  mode === dialogModes.create
+		    ? 'Crea appuntamento'
+		    : mode === dialogModes.edit
+		      ? 'Modifica appuntamento'
+		      : 'Dettaglio appuntamento'
+		}}
+	</h2>
+</div>
+
+<form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+	<mat-dialog-content class="dialog-content">
+		<mat-form-field appearance="outline" class="w-100">
+			<mat-label>Tipo visita</mat-label>
+			<mat-select formControlName="visitType" [disabled]="isDoctor">
+				<mat-option *ngFor="let vt of visitTypes" [value]="vt">
+					{{ formatVisitType(vt) }}
+				</mat-option>
+			</mat-select>
+		</mat-form-field>
+
+		<mat-form-field appearance="outline" class="w-100" *ngIf="!isPatient">
+			<mat-label>Paziente</mat-label>
+			<input
+				matInput
+				type="text"
+				placeholder="Cerca paziente per nome, cognome o username"
+				formControlName="patientSearch"
+				[matAutocomplete]="patientAuto"
+			/>
+			<mat-autocomplete
+				#patientAuto="matAutocomplete"
+				[displayWith]="displayUser"
+				(optionSelected)="onPatientOptionSelected($event.option.value)"
+			>
+				<mat-option *ngFor="let patient of filteredPatients" [value]="patient">
+					{{ patient.firstName }} {{ patient.lastName }} ({{ patient.username }})
+				</mat-option>
+			</mat-autocomplete>
+		</mat-form-field>
+
+		<mat-form-field appearance="outline" class="w-100" *ngIf="!isDoctor">
+			<mat-label>Medico</mat-label>
+			<input
+				matInput
+				type="text"
+				placeholder="Cerca medico per nome, cognome o username"
+				formControlName="doctorSearch"
+				[disabled]="!selectedVisitType"
+				[matAutocomplete]="doctorAuto"
+			/>
+			<mat-autocomplete
+				#doctorAuto="matAutocomplete"
+				[displayWith]="displayUser"
+				(optionSelected)="onDoctorOptionSelected($event.option.value)"
+			>
+				<mat-option *ngFor="let doctor of filteredDoctors" [value]="doctor">
+					{{ doctor.firstName }} {{ doctor.lastName }} ({{ doctor.username }})
+				</mat-option>
+			</mat-autocomplete>
+		</mat-form-field>
+
+		<mat-form-field appearance="outline" class="w-100">
+			<mat-label>Data appuntamento</mat-label>
+			<input
+				matInput
+				[matDatepicker]="picker"
+				formControlName="appointmentDay"
+				[min]="today"
+				(dateChange)="onAppointmentDateChange($event.value)"
+			/>
+			<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+			<mat-datepicker #picker></mat-datepicker>
+		</mat-form-field>
+
+		<!-- Orario: select per creazione/modifica, campo read-only per visualizzazione -->
+		<mat-form-field appearance="outline" class="w-100" *ngIf="mode !== dialogModes.view && form.value.appointmentDay">
+			<mat-label>Orario</mat-label>
+			<mat-select formControlName="availabilityId" (selectionChange)="onSlotSelected($event.value)">
+				<mat-option *ngIf="availableSlots.length === 0" [disabled]="true" [value]="null">
+					Nessun orario disponibile per la data scelta
+				</mat-option>
+				<mat-option *ngFor="let slot of availableSlots" [value]="slot">
+					{{ (slot.time || slot.availableTime) | slice:0:5 }}
+				</mat-option>
+			</mat-select>
+		</mat-form-field>
+
+		<mat-form-field appearance="outline" class="w-100" *ngIf="mode === dialogModes.view">
+			<mat-label>Orario</mat-label>
+			<input matInput [value]="form.value.appointmentTime" disabled />
+		</mat-form-field>
+
+		<mat-form-field appearance="outline" class="w-100">
+			<mat-label>Note</mat-label>
+			<textarea matInput formControlName="notes" rows="3"></textarea>
+		</mat-form-field>
+	</mat-dialog-content>
+
+	<mat-dialog-actions class="dialog-actions">
+		<button mat-button type="button" (click)="close()">{{ mode === dialogModes.view ? 'Chiudi' : 'Annulla' }}</button>
+		<button
+			mat-raised-button
+			color="primary"
+			type="submit"
+			*ngIf="mode !== dialogModes.view"
+			[disabled]="form.invalid"
+		>
+			Salva
+		</button>
+	</mat-dialog-actions>
+</form>
